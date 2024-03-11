@@ -1,11 +1,18 @@
-const express = require('express')
-const app = express()
-const port = 3000
+const express = require('express');
+const sequelize = require('./database/db');
+const productRoutes = require('./routes/routes');
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+const app = express();
+const PORT = 5001;
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+sequelize.sync().then(() => {
+  console.log('Database synchronized');
+});
+
+app.use(express.json());
+
+app.use(productRoutes);
+
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
+});
